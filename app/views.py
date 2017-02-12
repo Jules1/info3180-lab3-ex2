@@ -71,7 +71,7 @@ def send_email(from_name, from_email, subject, msg):
     to_addr = ""
     to_name ="Support@Lab3"
     username = 'julesingledew@gmail.com'
-    password= 'zhenonpgabmqtmtj'
+    password= 'xxxxxxxxxxxxxxxx'
     
     message_to_send = """
     From: {} <{}>
