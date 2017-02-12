@@ -6,7 +6,7 @@ This file creates your application.
 """
 
 from app import app
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, flash
 
 
 ###
@@ -51,7 +51,40 @@ def add_header(response):
 def page_not_found(error):
     """Custom 404 page."""
     return render_template('404.html'), 404
+    
+@app.route('/contact', methods=['GET','POST'])
+def contact():
+    if request.method == 'POST':
+        send_email(request.form['from_name'], request.form['from_email'], request.form['subject'], request.form['msg'])
+        flash('Message Sent')
+        return redirect(url_for('home'))
+    return render_template('contact.html')
+    
 
 
 if __name__ == '__main__':
     app.run(debug=True,host="0.0.0.0",port="8080")
+
+def send_email(from_name, from_email, subject, msg):
+    import smtplib
+    
+    to_addr = ""
+    to_name ="Support@Lab3"
+    username = 'julesingledew@gmail.com'
+    password= 'zhenonpgabmqtmtj'
+    
+    message_to_send = """
+    From: {} <{}>
+    To: {} <{}>
+    
+    Subject: {}
+    
+    {}
+    """.format(from_name, from_email, to_name, to_addr, subject, msg)
+    
+    server = smtplib.SMTP('smtp.gmail.com:587')
+    server.starttls()
+    server.login(username, password)
+    server.sendmail(from_email, to_addr, message_to_send)
+    server.quit()
+    
